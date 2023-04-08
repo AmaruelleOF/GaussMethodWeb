@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/bootstrap-reboot.min.css"/>
+    <link rel="stylesheet" href="css/site.css"/>
+    <link rel="text/javascript" href="https://www.jsdelivr.com/package/npm/mathjs"/>
+    <meta charset="UTF-8">
+    <title>Метод Гаусса</title>
+</head>
+<body>
+    <h1>Решение систем уравнений методом Гаусса</h1>
+    <hr/>
+    <div class="alert alert-warning" role="alert">
+        Здесь можно решить любую систему (до 5х5) методом Гаусса
+    </div>
+    <p>Введи размерность матрицы и её коэффициенты:</p>
+    <div id="sizes-container">
+        <label>x
+            <select class="form-select" id="rows">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </label>
+        <label>y
+            <select class="form-select" id="cols">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </label>
+    </div>
+
+    <div class="card m-2">
+      <div class="card-body">
+          <mtable id="my-table">
+              <mtr>
+                  <mtd><input type="number" class="form-control"/></mtd>
+              </mtr>
+          </mtable>
+      </div>
+    </div>
+
+    <p>Теперь введи, чему равняется каждая строка:</p>
+    <div class="m-2" id="results-container">
+        <input type="number" class="form-control"/>
+    </div>
+
+    <button class="btn btn-primary m-2 mt-4 mb-5" id="solve-btn">Решить</button>
+
+    <ul class="list-group mt-3 ms-2 me-2" id="steps-list">
+        <li class="list-group-item text-wrap">Здесь будет поэтапное решение задачи...</li>
+    </ul>
+</body>
+<script src="js/bootstrap.js"></script>
+<script src="js/main.js"></script>
+</html>
