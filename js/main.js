@@ -60,6 +60,7 @@
 
     // Perform Gaussian elimination
     const n = matrix.length;
+    const freeVariables = new Set();
     for (let i = 0; i < n; i++) {
       // Find pivot row
       let maxRowIndex = i;
@@ -87,28 +88,84 @@
         results[j] -= factor * results[i];
       }
 
+      // Check if the row has all zeros (free variable)
+      let allZeros = true;
+      for (let j = i; j < n; j++) {
+        if (matrix[i][j] !== 0) {
+          allZeros = false;
+          break;
+        }
+      }
+
+      if (allZeros) {
+        freeVariables.add(i);
+        continue;
+      }
+
       // Add step to steps list
       const stepListElement = document.createElement("li");
       stepListElement.classList.add("list-group-item");
-      const stepMatrix = matrix.map(row => row.map(value => value.toFixed(2)));
-      const stepResults = results.map(value => value.toFixed(2));
-      stepListElement.innerText = `Шаг ${i + 1}: ${stepMatrix} | ${stepResults}`;
+
+      // Create table for matrix and results
+      const table = document.createElement("table");
+      table.classList.add("table", "table-bordered");
+
+      // Create table header for matrix
+      const matrixHeader = document.createElement("thead");
+      const matrixHeaderRow = document.createElement("tr");
+      for (let j = 0; j < matrix.length + 1; j++) {
+        const matrixHeaderCell = document.createElement("th");
+        matrixHeaderCell.innerText = `x${j + 1}`;
+        if (j === matrix.length) matrixHeaderCell.innerText = 'Результаты';
+        matrixHeaderRow.appendChild(matrixHeaderCell);
+      }
+      matrixHeader.appendChild(matrixHeaderRow);
+      table.appendChild(matrixHeader);
+
+      // Create table body for matrix and results
+      const tableBody = document.createElement("tbody");
+      for (let i = 0; i < matrix.length; i++) {
+        const tableRow = document.createElement("tr");
+        for (let j = 0; j < matrix[i].length; j++) {
+          const tableCell = document.createElement("td");
+          tableCell.innerText = matrix[i][j].toFixed(2);
+          tableRow.appendChild(tableCell);
+        }
+        const resultCell = document.createElement("td");
+        resultCell.innerText = `${results[i].toFixed(2)}`;
+        tableRow.appendChild(resultCell);
+        tableBody.appendChild(tableRow);
+      }
+      table.appendChild(tableBody);
+
+      // Add table to step list
+      stepListElement.innerText = `Шаг ${i + 1}:`;
+      stepListElement.appendChild(table);
       stepsList.appendChild(stepListElement);
     }
 
-// Back-substitute to find solutions
+    // Back-substitute to find solutions
     const solutions = new Array(numCols);
     for (let i = numCols - 1; i >= 0; i--) {
+      if (freeVariables.has(i)) {
+        solutions[i] = `x${i + 1}`;
+        continue;
+      }
+
       let sum = 0;
       for (let j = i + 1; j < n; j++) {
-        sum += matrix[i][j] * solutions[j];
+        if (typeof solutions[j] === "string") {
+          sum += `${matrix[i][j] !== 1 ? ` - ${matrix[i][j]}` : " - "}${solutions[j]}`;
+        } else {
+          sum += matrix[i][j] * solutions[j];
+        }
       }
       solutions[i] = (results[i] - sum) / matrix[i][i];
     }
 
-// Add final step to steps list
+    // Add final step to steps list
     const finalStepListElement = document.createElement("li");
-    finalStepListElement.innerText = `Ответ: ${solutions.map(value => value.toFixed(2))}`;
+    finalStepListElement.innerText = `Ответ: ${solutions.map(value => typeof value === "string" ? value : value.toFixed(2))}`;
     finalStepListElement.classList.add("list-group-item");
     stepsList.appendChild(finalStepListElement);
   }
