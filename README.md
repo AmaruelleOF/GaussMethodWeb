@@ -12,4 +12,4 @@ To solve a system of linear equations using Matrix Solver, follow these steps:
 3. Click the "Решить" button to see the steps of the Gaussian elimination process and the final solutions.
 
 ## Credits
-Matrix Solver was created by [@amaruelleof](https://github.com/AmaruelleOF). The project is licensed under the MIT license.
+Matrix Solver was created by [@bulkabuka](https://github.com/bulkabuka). The project is licensed under the MIT license.
